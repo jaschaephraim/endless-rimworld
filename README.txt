@@ -1,6 +1,6 @@
 # Endless Rimworld
 
-![](About/Preview.png)
+![](https://github.com/jaschaephraim/endless-rimworld/blob/master/About/Preview.png)
 
 Endless Rimworld is a mod for the game [RimWorld](https://rimworldgame.com/).
 
