@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Manifest>
+    <identifier>jaschaephraim.endlessrimworld</identifier>
+    <version>1.0.0</version>
+    <dependencies>
+        <li>brrainz.harmony</li>
+    </dependencies>
+    <loadAfter>
+        <li>brrainz.harmony</li>
+    </loadAfter>
+    <showCrossPromotions>true</showCrossPromotions>
+    <manifestUri>https://github.com/jaschaephraim/endless-rimworld/master/About/Manifest.xml</manifestUri>
+    <downloadUri>https://github.com/jaschaephraim/endless-rimworld/releases/latest</downloadUri>
+</Manifest>
