@@ -9,7 +9,7 @@ namespace EndlessRimworld
     {
         static Patch_GameEnder()
         {
-            Harmony harmony = new Harmony("com.github.jaschaephraim.endless-rimworld");
+            Harmony harmony = new Harmony("jaschaephraim.endlessrimworld");
             harmony.PatchAll();
         }
 
@@ -18,12 +18,25 @@ namespace EndlessRimworld
             GameEnder gameEnder = Find.GameEnder;
             if (gameEnder.gameEnding)
             {
-                gameEnder.gameEnding = false;
-
+                int tick = Find.TickManager.TicksGame;
+                IncidentQueue incidentQueue = Find.Storyteller.incidentQueue;
                 IncidentDef wandererJoin = IncidentDefOf.WandererJoin;
+
+                foreach (QueuedIncident current in incidentQueue)
+                {
+                    if (current.FireTick - tick > GenDate.TicksPerDay)
+                    {
+                        break;
+                    }
+                    if (current.FiringIncident.def == wandererJoin)
+                    {
+                        return;
+                    }
+                }
+
                 Map anyPlayerHomeMap = Find.AnyPlayerHomeMap;
                 IncidentParms parms = StorytellerUtility.DefaultParmsNow(wandererJoin.category, anyPlayerHomeMap);
-                Find.Storyteller.incidentQueue.Add(wandererJoin, 0, parms);
+                incidentQueue.Add(wandererJoin, GenDate.TicksPerDay, parms);
             }
         }
     }

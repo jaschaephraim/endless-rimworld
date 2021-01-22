@@ -20,7 +20,7 @@
   <loadAfter>
     <li>brrainz.harmony</li>
   </loadAfter>
-  <description>The moment your last colonist dies, a new wanderer will arrive.
+  <description>Guarantees that a new wanderer will arrive within a day after your last colonist dies.
 
 Enjoy the challenge of rebuilding from the smoldering ashes of your failure, over and over again.
   </description>
