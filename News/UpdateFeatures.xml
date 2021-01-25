@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<HugsLib.UpdateFeatureDef Abstract="true" Name="UpdateFeatureBase">
+		<modNameReadable>Endless Rimworld</modNameReadable>
+		<modIdentifier>EndlessRimworld</modIdentifier>
+		<linkUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2369851475</linkUrl>
+	</HugsLib.UpdateFeatureDef>
+	
+	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+		<defName>EndlessRimworld_2_0_0</defName>
+		<assemblyVersion>2.0.0</assemblyVersion>
+		<content>* Added HugsLib dependency|* Added setting to customize maximum ticks before wanderer arrives (defaults to 1 in-game day)|* Removed change to "game over" dialog</content>
+	</HugsLib.UpdateFeatureDef>
+</Defs>
