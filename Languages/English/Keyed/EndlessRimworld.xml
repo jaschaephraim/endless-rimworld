@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <EndlessRimworldDelayTicks>Max ticks</EndlessRimworldDelayTicks>
+  <EndlessRimworldDelayTicksDescription>Maximum ticks after your final colonist dies before a new wanderer arrives (1 day = 60000 ticks)</EndlessRimworldDelayTicksDescription>
+</LanguageData>

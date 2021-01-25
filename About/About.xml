@@ -10,18 +10,24 @@
     <li>1.2</li>
   </supportedVersions>
   <modDependencies>
-    <li>
-      <packageId>brrainz.harmony</packageId>
-      <displayName>Harmony</displayName>
-      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
-      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
-    </li>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+		<li> 
+			<packageId>UnlimitedHugs.HugsLib</packageId>
+			<displayName>HugsLib</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
+			<downloadUrl>https://github.com/UnlimitedHugs/RimworldHugsLib/releases/latest</downloadUrl>
+		</li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
+    <li>UnlimitedHugs.HugsLib</li>
   </loadAfter>
-  <description>Guarantees that a new wanderer will arrive within a day after your last colonist dies.
+  <description>Guarantees that a new wanderer will arrive within a certain amount of time (a day by default) after your last colonist dies.
 
-Enjoy the challenge of rebuilding from the smoldering ashes of your failure, over and over again.
-  </description>
+Enjoy the challenge of rebuilding from the smoldering ashes of your failure, over and over again.</description>
 </ModMetaData>
