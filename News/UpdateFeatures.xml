@@ -17,4 +17,10 @@
 		<assemblyVersion>3.0.0</assemblyVersion>
 		<content>Updated for RimWorld 1.3. No longer compatible with older versions!</content>
 	</HugsLib.UpdateFeatureDef>
+
+	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+		<defName>EndlessRimworld_3_1_0</defName>
+		<assemblyVersion>3.1.0</assemblyVersion>
+		<content>Multiversion support</content>
+	</HugsLib.UpdateFeatureDef>
 </Defs>
