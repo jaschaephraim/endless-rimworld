@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using RimWorld.QuestGen;
 using Verse;
 using HarmonyLib;
 using HugsLib;
@@ -11,6 +12,16 @@ namespace EndlessRimworld
     {
         internal static ModLogger logger;
         internal static SettingHandle<int> delayTicks;
+        internal static Map queuedIncidentMap;
+
+        internal static bool IsIncidentQueued
+        {
+            get => queuedIncidentMap != null;
+            set
+            {
+                queuedIncidentMap = value ? Find.AnyPlayerHomeMap : null;
+            }
+        }
     }
 
     internal class EndlessRimworld : ModBase
@@ -40,23 +51,57 @@ namespace EndlessRimworld
         }
     }
 
+    [HarmonyPatch(typeof(Root), "Start")]
+    internal static class Patch_Root_Start
+    {
+        private static void Prefix()
+        {
+            State.logger.Trace("Resetting queued incident");
+            State.IsIncidentQueued = false;
+        }
+    }
+
+    [HarmonyPatch(typeof(IncidentWorker_GiveQuest), "CanFireNowSub")]
+    internal static class Patch_IncidentWorker_GiveQuest_CanFireNowSub
+    {
+        private static void Postfix(ref bool __result, IncidentWorker __instance)
+        {
+            if (__instance.def.defName == "EndlessRimworld_WandererJoin")
+            {
+                __result = true;
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(QuestGen_Get), "GetMap")]
+    internal static class Patch_QuestGen_Get_GetMap
+    {
+        private static void Postfix(ref Map __result)
+        {
+            if (State.IsIncidentQueued)
+            {
+                __result = State.queuedIncidentMap;
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(GameEnder), "CheckOrUpdateGameOver")]
     internal static class Patch_GameEnder
     {
-        private static bool isIncidentQueued;
-
         private static void Postfix()
         {
             if (Find.GameEnder.gameEnding)
             {
-                if (isIncidentQueued)
+                if (State.IsIncidentQueued)
                 {
                     return;
                 }
 
                 int tick = Find.TickManager.TicksGame;
                 IncidentQueue incidentQueue = Find.Storyteller.incidentQueue;
+
                 IncidentDef wandererJoin = IncidentDefOf.WandererJoin;
+                IncidentDef erWandererJoin = IncidentDef.Named("EndlessRimworld_WandererJoin");
 
                 foreach (QueuedIncident current in incidentQueue)
                 {
@@ -72,21 +117,20 @@ namespace EndlessRimworld
                     }
                 }
 
-                Map anyPlayerHomeMap = Find.AnyPlayerHomeMap;
-                IncidentParms parms = StorytellerUtility.DefaultParmsNow(wandererJoin.category, anyPlayerHomeMap);
+                State.IsIncidentQueued = true;
+                IncidentParms parms = StorytellerUtility.DefaultParmsNow(erWandererJoin.category, State.queuedIncidentMap);
                 parms.forced = true;
 
-                FiringIncident firingIncident = new FiringIncident(wandererJoin, null, parms);
+                FiringIncident firingIncident = new FiringIncident(erWandererJoin, null, parms);
                 QueuedIncident queuedIncident = new QueuedIncident(firingIncident, tick + State.delayTicks, 0);
 
                 State.logger.Trace("Queueing incident");
                 State.logger.Trace(queuedIncident);
                 incidentQueue.Add(queuedIncident);
-                isIncidentQueued = true;
             }
             else
             {
-                isIncidentQueued = false;
+                State.IsIncidentQueued = false;
             }
         }
     }

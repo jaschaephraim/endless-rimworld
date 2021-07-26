@@ -11,4 +11,10 @@
 		<assemblyVersion>2.0.0</assemblyVersion>
 		<content>* Added HugsLib dependency|* Added setting to customize maximum ticks before wanderer arrives (defaults to 1 in-game day)|* Removed change to "game over" dialog</content>
 	</HugsLib.UpdateFeatureDef>
+
+	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+		<defName>EndlessRimworld_3_0_0</defName>
+		<assemblyVersion>3.0.0</assemblyVersion>
+		<content>Updated for RimWorld 1.3. No longer compatible with older versions!</content>
+	</HugsLib.UpdateFeatureDef>
 </Defs>
