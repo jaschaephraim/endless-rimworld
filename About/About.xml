@@ -26,7 +26,7 @@
     <li>brrainz.harmony</li>
     <li>UnlimitedHugs.HugsLib</li>
   </loadAfter>
-  <description>Guarantees that a new wanderer will arrive within a certain amount of time (a day by default) after your last colonist dies.
+  <description>Guarantees that a new wanderer will arrive within a certain amount of time (a day by default) after game over.
 
 Enjoy the challenge of rebuilding from the smoldering ashes of your failure, over and over again.</description>
 </ModMetaData>

@@ -8,19 +8,25 @@ using HugsLib.Utils;
 
 namespace EndlessRimworld
 {
+    internal enum Stage
+    {
+        Uninitiated,
+        Initiated,
+        Queued,
+    }
+
     internal class State
     {
         internal static ModLogger logger;
         internal static SettingHandle<int> delayTicks;
-        internal static Map queuedIncidentMap;
+        internal static Stage stage;
+        internal static Map incidentMap;
 
-        internal static bool IsIncidentQueued
+        internal static void Reset()
         {
-            get => queuedIncidentMap != null;
-            set
-            {
-                queuedIncidentMap = value ? Find.AnyPlayerHomeMap : null;
-            }
+            State.logger.Trace("Resetting");
+            State.stage = Stage.Uninitiated;
+            State.incidentMap = null;
         }
     }
 
@@ -56,8 +62,7 @@ namespace EndlessRimworld
     {
         private static void Prefix()
         {
-            State.logger.Trace("Resetting queued incident");
-            State.IsIncidentQueued = false;
+            State.Reset();
         }
     }
 
@@ -78,25 +83,41 @@ namespace EndlessRimworld
     {
         private static void Postfix(ref Map __result)
         {
-            if (State.IsIncidentQueued)
+            if (State.stage == Stage.Queued)
             {
-                __result = State.queuedIncidentMap;
+                __result = State.incidentMap;
             }
         }
     }
 
     [HarmonyPatch(typeof(GameEnder), "CheckOrUpdateGameOver")]
-    internal static class Patch_GameEnder
+    internal static class Patch_GameEnder_CheckOrUpdateGameOver
     {
         private static void Postfix()
         {
             if (Find.GameEnder.gameEnding)
             {
-                if (State.IsIncidentQueued)
+                if (State.stage != Stage.Uninitiated)
                 {
                     return;
                 }
+                State.logger.Trace("Initiating enqueue");
+                State.stage = Stage.Initiated;
+            }
+            else
+            {
+                State.Reset();
+            }
+        }
+    }
 
+    [HarmonyPatch(typeof(GameEnder), "GameEndTick")]
+    internal static class Patch_GameEnder_GameEndTick
+    {
+        private static void Prefix(ref bool ___gameEnding, ref int ___ticksToGameOver)
+        {
+            if (State.stage == Stage.Initiated && ___gameEnding && ___ticksToGameOver == 0)
+            {
                 int tick = Find.TickManager.TicksGame;
                 IncidentQueue incidentQueue = Find.Storyteller.incidentQueue;
 
@@ -117,8 +138,8 @@ namespace EndlessRimworld
                     }
                 }
 
-                State.IsIncidentQueued = true;
-                IncidentParms parms = StorytellerUtility.DefaultParmsNow(erWandererJoin.category, State.queuedIncidentMap);
+                State.incidentMap = Find.AnyPlayerHomeMap;
+                IncidentParms parms = StorytellerUtility.DefaultParmsNow(erWandererJoin.category, State.incidentMap);
                 parms.forced = true;
 
                 FiringIncident firingIncident = new FiringIncident(erWandererJoin, null, parms);
@@ -127,10 +148,10 @@ namespace EndlessRimworld
                 State.logger.Trace("Queueing incident");
                 State.logger.Trace(queuedIncident);
                 incidentQueue.Add(queuedIncident);
-            }
-            else
-            {
-                State.IsIncidentQueued = false;
+
+                State.stage = Stage.Queued;
+                ___gameEnding = false;
+                ___ticksToGameOver = -1;
             }
         }
     }
