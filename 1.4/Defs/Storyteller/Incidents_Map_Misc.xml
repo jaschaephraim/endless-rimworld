@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <IncidentDef>
+    <defName>EndlessRimworld_WandererJoin</defName>
+    <label>wanderer join</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>IncidentWorker_GiveQuest</workerClass>
+    <questScriptDef>WandererJoins</questScriptDef>
+    <baseChance>0</baseChance>
+    <pawnKind>Villager</pawnKind>
+    <populationEffect>IncreaseEasy</populationEffect>
+  </IncidentDef>
+
+</Defs>

@@ -23,4 +23,10 @@
 		<assemblyVersion>3.1.0</assemblyVersion>
 		<content>Multiversion support</content>
 	</HugsLib.UpdateFeatureDef>
+
+	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+		<defName>EndlessRimworld_3_3_0</defName>
+		<assemblyVersion>3.3.0</assemblyVersion>
+		<content>Updated for RimWorld 1.4</content>
+	</HugsLib.UpdateFeatureDef>
 </Defs>
